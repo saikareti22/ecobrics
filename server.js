@@ -24,6 +24,8 @@ let products = [
             weight: '2.8 kg',
             dimensions: '230mm x 110mm x 75mm'
         },
+        textileWasteReduced: 2.0, // kg per brick
+        co2Saved: 1.5, // kg per brick
         stock: 10000,
         image: '/images/standard-brick.jpg'
     },
@@ -37,6 +39,8 @@ let products = [
             weight: '3.0 kg',
             dimensions: '230mm x 110mm x 75mm'
         },
+        textileWasteReduced: 2.5, // kg per brick
+        co2Saved: 2.0, // kg per brick
         stock: 8000,
         image: '/images/premium-brick.jpg'
     },
@@ -50,6 +54,8 @@ let products = [
             weight: '2.5 kg',
             dimensions: '230mm x 110mm x 100mm'
         },
+        textileWasteReduced: 2.2, // kg per brick
+        co2Saved: 1.8, // kg per brick
         stock: 5000,
         image: '/images/insulated-brick.jpg'
     }

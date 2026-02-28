@@ -1098,3 +1098,134 @@ body {
     margin-bottom: 1rem;
     border: 1px solid #c3e6cb;
 }
+
+/* Environmental Impact Badges */
+.environmental-impact {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-radius: 8px;
+}
+
+.impact-badge {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.impact-icon {
+    font-size: 1.5rem;
+}
+
+.impact-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.impact-text strong {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.impact-text span {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+/* Notification Impact */
+.notification-impact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.notification-impact span {
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* Cart Notification - Wider for impact info */
+.cart-notification {
+    min-width: 350px;
+}
+
+@media (max-width: 768px) {
+    .environmental-impact {
+        flex-direction: column;
+    }
+    
+    .cart-notification {
+        min-width: auto;
+    }
+}
+
+/* Checkout Impact Summary */
+.checkout-impact-summary {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.checkout-impact-summary h4 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.impact-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.impact-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.impact-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+}
+
+.impact-label {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+@media (max-width: 480px) {
+    .impact-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Impact List */
+.impact-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.impact-list li {
+    padding: 0.75rem 0;
+    font-size: 1.05rem;
+    color: var(--text-dark);
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.impact-list li:last-child {
+    border-bottom: none;
+}

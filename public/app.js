@@ -73,6 +73,22 @@ function displayProducts(products) {
                     <div class="product-specs">
                         ${specs}
                     </div>
+                    <div class="environmental-impact">
+                        <div class="impact-badge">
+                            <span class="impact-icon">♻️</span>
+                            <div class="impact-text">
+                                <strong>${product.textileWasteReduced} kg</strong>
+                                <span>Textile Waste Reduced</span>
+                            </div>
+                        </div>
+                        <div class="impact-badge">
+                            <span class="impact-icon">🌍</span>
+                            <div class="impact-text">
+                                <strong>${product.co2Saved} kg</strong>
+                                <span>CO₂ Saved</span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="stock-info">
                         <span>In Stock: ${product.stock} units</span>
                     </div>
@@ -133,28 +149,45 @@ async function addToCart(productId) {
     }
 }
 
-// Show cart notification with product details
+// Show cart notification with product details and environmental impact
 function showCartNotification(productName, quantity) {
-    const notification = document.createElement('div');
-    notification.className = 'cart-notification';
-    notification.innerHTML = `
-        <div class="notification-icon">✓</div>
-        <div class="notification-content">
-            <strong>Added to Cart!</strong>
-            <p>${productName} (${quantity} units)</p>
-        </div>
-        <button onclick="this.parentElement.remove()">✕</button>
-    `;
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 100);
-    
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => notification.remove(), 300);
-    }, 4000);
+    // Get product details for impact calculation
+    fetch(`${API_URL}/products`)
+        .then(res => res.json())
+        .then(result => {
+            if (result.success) {
+                const product = result.data.find(p => p.name === productName);
+                if (product) {
+                    const totalWasteReduced = (product.textileWasteReduced * quantity).toFixed(1);
+                    const totalCO2Saved = (product.co2Saved * quantity).toFixed(1);
+                    
+                    const notification = document.createElement('div');
+                    notification.className = 'cart-notification';
+                    notification.innerHTML = `
+                        <div class="notification-icon">✓</div>
+                        <div class="notification-content">
+                            <strong>Added to Cart!</strong>
+                            <p>${productName} (${quantity} units)</p>
+                            <div class="notification-impact">
+                                <span>♻️ ${totalWasteReduced} kg textile waste reduced</span>
+                                <span>🌍 ${totalCO2Saved} kg CO₂ saved</span>
+                            </div>
+                        </div>
+                        <button onclick="this.parentElement.remove()">✕</button>
+                    `;
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.classList.add('show');
+                    }, 100);
+                    
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        setTimeout(() => notification.remove(), 300);
+                    }, 5000);
+                }
+            }
+        });
 }
 
 // Highlight cart button
@@ -279,8 +312,17 @@ async function loadCheckoutItems() {
             const checkoutItems = document.getElementById('checkout-items');
             const checkoutTotal = document.getElementById('checkout-total');
             
+            let totalWaste = 0;
+            let totalCO2 = 0;
+            
             checkoutItems.innerHTML = '';
             result.data.items.forEach(item => {
+                // Calculate environmental impact
+                const wasteReduced = (item.product.textileWasteReduced || 2) * item.quantity;
+                const co2Saved = (item.product.co2Saved || 1.5) * item.quantity;
+                totalWaste += wasteReduced;
+                totalCO2 += co2Saved;
+                
                 checkoutItems.innerHTML += `
                     <div class="checkout-item">
                         <span>${item.product.name} x ${item.quantity}</span>
@@ -288,6 +330,23 @@ async function loadCheckoutItems() {
                     </div>
                 `;
             });
+            
+            // Add environmental impact summary
+            checkoutItems.innerHTML += `
+                <div class="checkout-impact-summary">
+                    <h4>🌱 Your Environmental Impact</h4>
+                    <div class="impact-stats">
+                        <div class="impact-stat">
+                            <span class="impact-value">♻️ ${totalWaste.toFixed(1)} kg</span>
+                            <span class="impact-label">Textile Waste Reduced</span>
+                        </div>
+                        <div class="impact-stat">
+                            <span class="impact-value">🌍 ${totalCO2.toFixed(1)} kg</span>
+                            <span class="impact-label">CO₂ Emissions Saved</span>
+                        </div>
+                    </div>
+                </div>
+            `;
             
             checkoutTotal.textContent = `₹${result.data.subtotal.toFixed(2)}`;
         }
