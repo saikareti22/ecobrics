@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoBricks - Sustainable Building Materials from Textile Waste</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">EcoBricks</div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#sustainability">Sustainability</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="cart-btn" onclick="toggleCart()">
+                        🛒 Cart (<span id="cart-count">0</span>)
+                    </button>
+                    <button class="cta-btn" onclick="scrollToContact()">Get Quote</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Cart items will be loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Subtotal:</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+            <button class="btn-checkout" onclick="checkout()">Proceed to Checkout</button>
+            <button class="btn-clear-cart" onclick="clearCart()">Clear Cart</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Building Tomorrow with Yesterday's Textiles</h1>
+                <p>Revolutionary eco-friendly bricks made from recycled textile waste. Sustainable, durable, and perfect for modern construction.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'})">Shop Now</button>
+                    <button class="btn-secondary" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">Learn More</button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <h3 id="total-bricks">0</h3>
+                        <p>Bricks Sold</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 id="waste-recycled">0</h3>
+                        <p>Tons Recycled</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 id="total-orders">0</h3>
+                        <p>Orders Completed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">♻️</div>
+                    <h3>100% Recycled</h3>
+                    <p>Made entirely from textile waste</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💪</div>
+                    <h3>High Durability</h3>
+                    <p>Tested for strength and longevity</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Eco-Friendly</h3>
+                    <p>Reduces landfill waste by 95%</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Cost Effective</h3>
+                    <p>Competitive pricing for bulk orders</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <h2 class="section-title">Our Products</h2>
+            <div id="product-grid" class="product-grid">
+                <!-- Products will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Transforming Waste into Wonder</h2>
+                    <p>Every year, millions of tons of textile waste end up in landfills. We're changing that story. Our innovative process transforms discarded fabrics into high-quality building materials that meet international construction standards.</p>
+                    <p>Each EcoBrick diverts approximately 2kg of textile waste from landfills while providing a sustainable alternative to traditional building materials.</p>
+                    <button class="btn-primary" onclick="scrollToContact()">Contact Us</button>
+                </div>
+                <div class="about-stats">
+                    <div class="stat">
+                        <h3>5M+</h3>
+                        <p>Bricks Produced</p>
+                    </div>
+                    <div class="stat">
+                        <h3>10K+</h3>
+                        <p>Tons Recycled</p>
+                    </div>
+                    <div class="stat">
+                        <h3>500+</h3>
+                        <p>Projects Completed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sustainability Section -->
+    <section id="sustainability" class="sustainability">
+        <div class="container">
+            <h2 class="section-title">Our Impact</h2>
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <h3>Carbon Footprint</h3>
+                    <p>60% lower CO2 emissions compared to traditional bricks</p>
+                </div>
+                <div class="impact-card">
+                    <h3>Water Conservation</h3>
+                    <p>Uses 80% less water in production</p>
+                </div>
+                <div class="impact-card">
+                    <h3>Energy Efficient</h3>
+                    <p>Manufacturing requires 50% less energy</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <form id="contact-form" class="contact-form">
+                <div class="form-row">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-row">
+                    <input type="tel" name="phone" placeholder="Phone Number">
+                    <input type="text" name="company" placeholder="Company Name">
+                </div>
+                <textarea name="message" placeholder="Tell us about your project" rows="5" required></textarea>
+                <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCheckout()">&times;</span>
+            <h2>Checkout</h2>
+            <form id="checkout-form">
+                <h3>Customer Information</h3>
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="tel" name="phone" placeholder="Phone Number" required>
+                <input type="text" name="company" placeholder="Company Name">
+                
+                <h3>Shipping Address</h3>
+                <input type="text" name="address" placeholder="Street Address" required>
+                <div class="form-row">
+                    <input type="text" name="city" placeholder="City" required>
+                    <input type="text" name="state" placeholder="State" required>
+                </div>
+                <div class="form-row">
+                    <input type="text" name="zip" placeholder="ZIP Code" required>
+                    <input type="text" name="country" placeholder="Country" value="India" required>
+                </div>
+                
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="checkout-items"></div>
+                    <div class="checkout-total">
+                        <strong>Total: <span id="checkout-total">₹0.00</span></strong>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary">Proceed to Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closePayment()">&times;</span>
+            <h2>Payment Details</h2>
+            <div class="payment-summary">
+                <h3>Order Total: <span id="payment-total">₹0.00</span></h3>
+            </div>
+            
+            <div class="payment-methods">
+                <h3>Select Payment Method</h3>
+                <div class="payment-options">
+                    <label class="payment-option">
+                        <input type="radio" name="payment-method" value="upi" checked>
+                        <div class="payment-card">
+                            <span class="payment-icon">📱</span>
+                            <span>UPI Payment</span>
+                        </div>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment-method" value="card">
+                        <div class="payment-card">
+                            <span class="payment-icon">💳</span>
+                            <span>Credit/Debit Card</span>
+                        </div>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment-method" value="netbanking">
+                        <div class="payment-card">
+                            <span class="payment-icon">🏦</span>
+                            <span>Net Banking</span>
+                        </div>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment-method" value="cod">
+                        <div class="payment-card">
+                            <span class="payment-icon">💵</span>
+                            <span>Cash on Delivery</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div id="upi-section" class="payment-section">
+                <h3>UPI Payment</h3>
+                <input type="text" id="upi-id" placeholder="Enter UPI ID (e.g., name@upi)">
+                <p class="payment-note">You will receive a payment request on your UPI app</p>
+            </div>
+
+            <div id="card-section" class="payment-section" style="display: none;">
+                <h3>Card Details</h3>
+                <input type="text" placeholder="Card Number" maxlength="16">
+                <input type="text" placeholder="Cardholder Name">
+                <div class="form-row">
+                    <input type="text" placeholder="MM/YY" maxlength="5">
+                    <input type="text" placeholder="CVV" maxlength="3">
+                </div>
+            </div>
+
+            <div id="netbanking-section" class="payment-section" style="display: none;">
+                <h3>Select Your Bank</h3>
+                <select>
+                    <option>State Bank of India</option>
+                    <option>HDFC Bank</option>
+                    <option>ICICI Bank</option>
+                    <option>Axis Bank</option>
+                    <option>Punjab National Bank</option>
+                    <option>Bank of Baroda</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div id="cod-section" class="payment-section" style="display: none;">
+                <h3>Cash on Delivery</h3>
+                <p class="payment-note">Pay when you receive your order. Additional charges may apply.</p>
+            </div>
+
+            <button class="btn-primary" onclick="processPayment()">Pay Now</button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content success-content">
+            <div class="success-icon">✓</div>
+            <h2>Order Placed Successfully!</h2>
+            <div id="order-details">
+                <p><strong>Order Number:</strong> <span id="order-number"></span></p>
+                <p><strong>Total Amount:</strong> <span id="order-amount"></span></p>
+                <p><strong>Payment Method:</strong> <span id="payment-method-display"></span></p>
+            </div>
+            <p class="success-message">Thank you for your order! You will receive a confirmation email shortly.</p>
+            <button class="btn-primary" onclick="closeSuccess()">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>EcoBricks</h4>
+                    <p>Building a sustainable future, one brick at a time.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@ecobricks.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 EcoBricks. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
