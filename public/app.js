@@ -2,6 +2,16 @@ const API_URL = 'http://localhost:3000/api';
 
 // Load products on page load
 document.addEventListener('DOMContentLoaded', () => {
+    // Check if user is logged in or is guest
+    const currentUser = localStorage.getItem('currentUser');
+    const isGuest = localStorage.getItem('isGuest');
+    
+    if (!currentUser && !isGuest) {
+        // Redirect to login page
+        window.location.href = 'login.html';
+        return;
+    }
+    
     loadProducts();
     loadCart();
     loadStats();
@@ -523,3 +533,223 @@ window.onclick = function(event) {
         closeSuccess();
     }
 }
+
+
+// Authentication Functions
+let currentUser = null;
+
+// Check if user is logged in on page load
+function checkLoginStatus() {
+    const user = localStorage.getItem('currentUser');
+    if (user) {
+        currentUser = JSON.parse(user);
+        updateUIForLoggedInUser();
+    }
+}
+
+// Show login modal
+function showLogin() {
+    if (currentUser) {
+        // If already logged in, show profile
+        document.getElementById('login-form-container').style.display = 'none';
+        document.getElementById('signup-form-container').style.display = 'none';
+        document.getElementById('user-profile-container').style.display = 'block';
+        updateProfileDisplay();
+    } else {
+        document.getElementById('login-form-container').style.display = 'block';
+        document.getElementById('signup-form-container').style.display = 'none';
+        document.getElementById('user-profile-container').style.display = 'none';
+    }
+    document.getElementById('auth-modal').style.display = 'block';
+}
+
+// Show signup form
+function showSignup() {
+    document.getElementById('login-form-container').style.display = 'none';
+    document.getElementById('signup-form-container').style.display = 'block';
+    document.getElementById('user-profile-container').style.display = 'none';
+}
+
+// Close auth modal
+function closeAuth() {
+    document.getElementById('auth-modal').style.display = 'none';
+}
+
+// Handle login
+async function handleLogin(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const loginData = {
+        email: formData.get('email'),
+        password: formData.get('password')
+    };
+    
+    try {
+        const response = await fetch(`${API_URL}/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(loginData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            currentUser = result.data.user;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('authToken', result.data.token);
+            
+            showAuthMessage('Login successful!', 'success');
+            updateUIForLoggedInUser();
+            
+            setTimeout(() => {
+                closeAuth();
+            }, 1500);
+        } else {
+            showAuthMessage(result.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error logging in:', error);
+        showAuthMessage('Login failed. Please try again.', 'error');
+    }
+}
+
+// Handle signup
+async function handleSignup(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const password = formData.get('password');
+    const confirmPassword = formData.get('confirmPassword');
+    
+    if (password !== confirmPassword) {
+        showAuthMessage('Passwords do not match!', 'error');
+        return;
+    }
+    
+    const signupData = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        password: password
+    };
+    
+    try {
+        const response = await fetch(`${API_URL}/auth/signup`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(signupData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showAuthMessage('Account created successfully! Please login.', 'success');
+            
+            setTimeout(() => {
+                showLogin();
+            }, 2000);
+        } else {
+            showAuthMessage(result.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error signing up:', error);
+        showAuthMessage('Signup failed. Please try again.', 'error');
+    }
+}
+
+// Update UI for logged in user
+function updateUIForLoggedInUser() {
+    const userBtn = document.getElementById('user-btn');
+    userBtn.textContent = `👤 ${currentUser.name.split(' ')[0]}`;
+    userBtn.classList.add('logged-in');
+}
+
+// Update profile display
+function updateProfileDisplay() {
+    document.getElementById('user-name-display').textContent = currentUser.name;
+    document.getElementById('user-email-display').textContent = currentUser.email;
+    document.getElementById('user-avatar').textContent = currentUser.name.charAt(0).toUpperCase();
+}
+
+// Logout
+function logout() {
+    currentUser = null;
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('isGuest');
+    
+    const userBtn = document.getElementById('user-btn');
+    userBtn.textContent = '👤 Login';
+    userBtn.classList.remove('logged-in');
+    
+    closeAuth();
+    showNotification('Logged out successfully');
+    
+    // Redirect to login page
+    setTimeout(() => {
+        window.location.href = 'login.html';
+    }, 1500);
+}
+
+// Show auth message
+function showAuthMessage(message, type) {
+    const existingMsg = document.querySelector('.auth-error, .auth-success');
+    if (existingMsg) {
+        existingMsg.remove();
+    }
+    
+    const msgDiv = document.createElement('div');
+    msgDiv.className = type === 'error' ? 'auth-error' : 'auth-success';
+    msgDiv.textContent = message;
+    
+    const activeForm = document.querySelector('.auth-form-container[style*="block"]');
+    if (activeForm) {
+        const form = activeForm.querySelector('form');
+        form.insertBefore(msgDiv, form.firstChild);
+    }
+}
+
+// Show my orders
+function showMyOrders() {
+    closeAuth();
+    alert('My Orders feature - Coming soon! This will show your order history.');
+}
+
+// Show profile settings
+function showProfile() {
+    closeAuth();
+    alert('Profile Settings - Coming soon! This will allow you to edit your profile.');
+}
+
+// Update setupEventListeners to include auth forms
+const originalSetupEventListeners = setupEventListeners;
+setupEventListeners = function() {
+    originalSetupEventListeners();
+    
+    // Login form
+    document.getElementById('login-form').addEventListener('submit', handleLogin);
+    
+    // Signup form
+    document.getElementById('signup-form').addEventListener('submit', handleSignup);
+    
+    // Check login status on load
+    checkLoginStatus();
+};
+
+// Update window.onclick to include auth modal
+const originalWindowOnclick = window.onclick;
+window.onclick = function(event) {
+    if (originalWindowOnclick) {
+        originalWindowOnclick(event);
+    }
+    
+    const authModal = document.getElementById('auth-modal');
+    if (event.target === authModal) {
+        closeAuth();
+    }
+};

@@ -26,11 +26,111 @@
                     <button class="cart-btn" onclick="toggleCart()">
                         🛒 Cart (<span id="cart-count">0</span>)
                     </button>
+                    <button class="user-btn" id="user-btn" onclick="showLogin()">
+                        👤 Login
+                    </button>
                     <button class="cta-btn" onclick="scrollToContact()">Get Quote</button>
                 </div>
             </div>
         </div>
     </nav>
+
+    <!-- Login/Signup Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content auth-modal-content">
+            <span class="close-modal" onclick="closeAuth()">&times;</span>
+            
+            <!-- Login Form -->
+            <div id="login-form-container" class="auth-form-container">
+                <h2>Welcome Back!</h2>
+                <p class="auth-subtitle">Login to your account</p>
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" name="remember">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn-primary btn-auth">Login</button>
+                </form>
+                <p class="auth-switch">
+                    Don't have an account? 
+                    <a href="#" onclick="showSignup(); return false;">Sign Up</a>
+                </p>
+            </div>
+
+            <!-- Signup Form -->
+            <div id="signup-form-container" class="auth-form-container" style="display: none;">
+                <h2>Create Account</h2>
+                <p class="auth-subtitle">Join us today!</p>
+                <form id="signup-form" class="auth-form">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" name="phone" placeholder="Enter your phone number" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" placeholder="Create a password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" name="confirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" name="terms" required>
+                            <span>I agree to Terms & Conditions</span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-primary btn-auth">Sign Up</button>
+                </form>
+                <p class="auth-switch">
+                    Already have an account? 
+                    <a href="#" onclick="showLogin(); return false;">Login</a>
+                </p>
+            </div>
+
+            <!-- User Profile (shown after login) -->
+            <div id="user-profile-container" class="auth-form-container" style="display: none;">
+                <div class="user-profile">
+                    <div class="profile-avatar">
+                        <span id="user-avatar">👤</span>
+                    </div>
+                    <h2 id="user-name-display">User Name</h2>
+                    <p id="user-email-display">user@example.com</p>
+                    
+                    <div class="profile-menu">
+                        <button class="profile-menu-item" onclick="showMyOrders()">
+                            📦 My Orders
+                        </button>
+                        <button class="profile-menu-item" onclick="showProfile()">
+                            ⚙️ Account Settings
+                        </button>
+                        <button class="profile-menu-item" onclick="logout()">
+                            🚪 Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Cart Sidebar -->
     <div id="cart-sidebar" class="cart-sidebar">

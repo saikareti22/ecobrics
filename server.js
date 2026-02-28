@@ -58,6 +58,118 @@ let products = [
 let orders = [];
 let cart = [];
 let contacts = [];
+let users = [];
+
+// Authentication Routes
+
+// Signup
+app.post('/api/auth/signup', (req, res) => {
+    const { name, email, phone, password } = req.body;
+
+    if (!name || !email || !password) {
+        return res.status(400).json({
+            success: false,
+            message: 'Name, email, and password are required'
+        });
+    }
+
+    // Check if user already exists
+    const existingUser = users.find(u => u.email === email);
+    if (existingUser) {
+        return res.status(400).json({
+            success: false,
+            message: 'Email already registered'
+        });
+    }
+
+    const user = {
+        id: users.length + 1,
+        name,
+        email,
+        phone,
+        password, // In production, hash this password!
+        createdAt: new Date().toISOString()
+    };
+
+    users.push(user);
+
+    res.json({
+        success: true,
+        message: 'Account created successfully',
+        data: { userId: user.id }
+    });
+});
+
+// Login
+app.post('/api/auth/login', (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({
+            success: false,
+            message: 'Email and password are required'
+        });
+    }
+
+    const user = users.find(u => u.email === email && u.password === password);
+    
+    if (!user) {
+        return res.status(401).json({
+            success: false,
+            message: 'Invalid email or password'
+        });
+    }
+
+    // Create a simple token (in production, use JWT)
+    const token = `token_${user.id}_${Date.now()}`;
+
+    res.json({
+        success: true,
+        message: 'Login successful',
+        data: {
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                phone: user.phone
+            },
+            token
+        }
+    });
+});
+
+// Get user profile
+app.get('/api/auth/profile', (req, res) => {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader) {
+        return res.status(401).json({
+            success: false,
+            message: 'Not authenticated'
+        });
+    }
+
+    // Extract user ID from token (simplified)
+    const userId = parseInt(authHeader.split('_')[1]);
+    const user = users.find(u => u.id === userId);
+
+    if (!user) {
+        return res.status(404).json({
+            success: false,
+            message: 'User not found'
+        });
+    }
+
+    res.json({
+        success: true,
+        data: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone
+        }
+    });
+});
 
 // Routes
 
